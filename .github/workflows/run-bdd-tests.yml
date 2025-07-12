@@ -30,5 +30,5 @@ jobs:
       - name: Upload HTML Report
         uses: actions/upload-artifact@v4
         with:
-          name: behave-html-report
+          name: html-report
           path: results-reports/report.html

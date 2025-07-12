@@ -28,7 +28,7 @@ jobs:
         run: behave --format html --outfile results-reports/report.html
 
       - name: Upload HTML Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: behave-html-report
           path: results-reports/report.html

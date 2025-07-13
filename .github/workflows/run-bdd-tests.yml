@@ -1,4 +1,4 @@
-name: run-behave-tests
+name: BDD API Tests with Allure
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  bdd-tests:
+  run-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,19 +17,24 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.11
+          python-version: '3.11'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run BDD tests and generate HTML report
-        run: |
-          behave -f behave_html_formatter:HTMLFormatter -o results-reports/report.html
+      - name: Run Behave Tests with Allure output
+        run: behave -f allure_behave.formatter:AllureFormatter -o allure-results
 
-      - name: Upload HTML report
+      - name: Generate Allure HTML Report
+        run: |
+          wget https://github.com/allure-framework/allure2/releases/download/2.27.0/allure-2.27.0.zip
+          unzip allure-2.27.0.zip
+          ./allure-2.27.0/bin/allure generate allure-results -o allure-report --clean
+
+      - name: Upload Allure Report Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: behave-html-report
-          path: results-reports/report.html
+          name: allure-report
+          path: allure-report
